@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "description": "This app can make escrows only with commands.",
   "main": "index.js",
+  "bin": {
+    "escrow": "./bin/escrow-maker.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -15,5 +18,12 @@
   "bugs": {
     "url": "https://github.com/zkCaleb-dev/Escrow-Maker/issues"
   },
-  "homepage": "https://github.com/zkCaleb-dev/Escrow-Maker#readme"
+  "homepage": "https://github.com/zkCaleb-dev/Escrow-Maker#readme",
+  "dependencies": {
+    "@stellar/stellar-sdk": "^13.3.0",
+    "axios": "^1.9.0",
+    "commander": "^14.0.0",
+    "dotenv": "^16.5.0",
+    "inquirer": "^12.6.3"
+  }
 }
