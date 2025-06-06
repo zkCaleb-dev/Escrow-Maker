@@ -1,2 +1,6 @@
 # .gitignore
 config/credentials.json
+
+
+# compiled_outpu
+/node_modules
