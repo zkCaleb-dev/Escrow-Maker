@@ -3,37 +3,40 @@
 const { Command } = require('commander');
 const program = new Command();
 
-// 1) Importar la función `deployEscrow` desde lib/commands/deploy.js
-//    Nota: como en deploy.js hacemos `module.exports = deployEscrow;`,
-//    acá capturamos directamente la función:
-const deployEscrow = require('../lib/commands/deploy');
+// 1) Importamos los subcomandos tipo Command:
+const deployCmd = require('../lib/commands/deploy');      // exporta directamente el Command('deploy')
+const configCmd = require('../lib/commands/config');      // exporta directamente el Command('config')
 
-// 2) Importar la función `saludar` desde lib/commands/init.js
+// 2) Importamos el comando de saludo (init.js) que sí es una función
 const { saludar } = require('../lib/commands/init');
 
-// Configuración general de la CLI
+// 3) Importamos el subcomando sign (exporta { signXdr: signCmd })
+const { signXdr: signCmd } = require('../lib/commands/sign');
+
 program
   .name('escrow')
-  .description('CLI para gestionar Escrows en Stellar a través de tu API local')
-  .version('1.0.0');
+  .version('1.0.0')
+  .description('CLI “escrow” para interactuar con Trustless Work');
 
-// Comando `deploy`: invoca la función deployEscrow
-program
-  .command('deploy')
-  .description('Solicita un XDR sin firmar, lo firma y lo envía al endpoint de transacción')
-  .option('-e, --extra <json>', 'JSON adicional con parámetros del escrow')
-  .action((options) => {
-    // Aquí sí existe deployEscrow, porque lo importamos arriba
-    deployEscrow(options);
-  });
+// 4) Registramos el subcomando `config`
+//    (lib/commands/config.js exporta un objeto Command con todos sus subcomandos)
+program.addCommand(configCmd);
 
-// Comando `greet`: invoca la función saludar
+// 5) Registramos el subcomando `deploy`
+//    (lib/commands/deploy.js exporta un objeto Command('deploy') ya configurado)
+program.addCommand(deployCmd);
+
+// 6) Registramos el subcomando `sign`
+//    (lib/commands/sign.js exportó { signXdr: signCmd }, donde signCmd es el objeto Command)
+program.addCommand(signCmd);
+
+// 7) El comando “greet” sigue siendo una función manual, así que lo definimos con `.command().action()`
 program
   .command('greet <nombre>')
-  .description('Saluda al nombre especificado')
-  .option('-u, --uppercase', 'Mostrar el saludo en mayúsculas')
-  .action((nombre, options) => {
-    saludar(nombre, options);
+  .description('Saluda al nombre proporcionado.')
+  .action((nombre, opts) => {
+    saludar(nombre, opts);
   });
 
+// 8) Finalmente parseamos los argumentos
 program.parse(process.argv);
