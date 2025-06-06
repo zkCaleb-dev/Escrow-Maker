@@ -8,6 +8,7 @@ const deployMultiCmd = require('../lib/commands/deploy-multi');
 const configCmd = require('../lib/commands/config');
 
 const { signXdr: signCmd } = require('../lib/commands/sign');
+const { signAndSendXdr: signAndSendCmd } = require('../lib/commands/sign-and-send');
 
 program
   .name('escrow')
@@ -20,5 +21,6 @@ program.addCommand(deploySingleCmd);
 program.addCommand(deployMultiCmd);
 
 program.addCommand(signCmd);
+program.addCommand(signAndSendCmd);
 
 program.parse(process.argv);
